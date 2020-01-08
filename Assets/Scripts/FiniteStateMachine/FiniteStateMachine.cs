@@ -31,14 +31,14 @@ namespace FiniteStateMachine
             if (m_CurrentState == null)
                 return;
 
-            int oldStateID = m_CurrentState.StateID;
-            int stateID = m_CurrentState.CheckTransitions();
+            int currentStateID = m_CurrentState.StateID;
+            int nextStateID = m_CurrentState.CheckTransitions();
 
-            if (stateID != oldStateID)
+            if (nextStateID != currentStateID)
             {
                 for (int i = 0; i < m_States.Count; i++)
                 {
-                    if (m_States[i].StateID == stateID)
+                    if (m_States[i].StateID == nextStateID)
                     {
                         m_CurrentState.Exit();
                         m_CurrentState = m_States[i];
