@@ -15,30 +15,24 @@ namespace FiniteStateMachine
 
             for (int i = 0; i < m_States.Count; i++)
             {
-                m_States[i].GameObject = gameObject;
+                m_States[i].gameObject = gameObject;
                 m_States[i].Initialize();
             }
+
+            m_CurrentState = m_DefaultState;
+            m_CurrentState.Enter();
         }
 
         private void Update()
         {
-            if (m_States.Count == 0)
-                return;
-
-            if (m_CurrentState == null)
-                m_CurrentState = m_DefaultState;
-
-            if (m_CurrentState == null)
-                return;
-
-            int currentStateID = m_CurrentState.StateID;
+            int currentStateID = m_CurrentState.GetStateID();
             int nextStateID = m_CurrentState.CheckTransitions();
 
             if (nextStateID != currentStateID)
             {
                 for (int i = 0; i < m_States.Count; i++)
                 {
-                    if (m_States[i].StateID == nextStateID)
+                    if (m_States[i].GetStateID() == nextStateID)
                     {
                         m_CurrentState.Exit();
                         m_CurrentState = m_States[i];
@@ -49,6 +43,17 @@ namespace FiniteStateMachine
             }
 
             m_CurrentState.Update();
+        }
+
+        public void Restart()
+        {
+            m_CurrentState.Exit();
+            m_CurrentState = m_DefaultState;
+
+            for (int i = 0; i < m_States.Count; i++)
+                m_States[i].Initialize();
+
+            m_CurrentState.Enter();
         }
     }
 }
