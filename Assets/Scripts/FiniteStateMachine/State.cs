@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
 
-public abstract class State : ScriptableObject
+namespace FiniteStateMachine
 {
-    public GameObject GameObject { get; set; }
-    public int StateID { get; protected set; }
-    public abstract int CheckTransitions();
-    public abstract void Enter();
-    public abstract void Exit();
-    public abstract void Initialize();
-    public abstract void Update();
+    public abstract class State : ScriptableObject
+    {
+        public GameObject GameObject { get; set; }
+        public abstract int StateID { get; }
+        public abstract int CheckTransitions();
+        public abstract void Enter();
+        public abstract void Exit();
+        public abstract void Initialize();
+        public abstract void Update();
+    }
 }

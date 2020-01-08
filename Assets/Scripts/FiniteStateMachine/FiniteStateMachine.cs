@@ -1,50 +1,54 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class FiniteStateMachine : MonoBehaviour
+namespace FiniteStateMachine
 {
-    [SerializeField] private State m_DefaultState;
-    [SerializeField] private List<State> m_States;
-    private State m_CurrentState;
-
-    private void Start()
+    public class FiniteStateMachine : MonoBehaviour
     {
-        m_States.Add(m_DefaultState);
+        [SerializeField] private State m_DefaultState;
+        [SerializeField] private List<State> m_States;
+        private State m_CurrentState;
 
-        foreach (State state in m_States)
+        private void Start()
         {
-            state.GameObject = gameObject;
-            state.Initialize();
-        }
-    }
+            m_States.Add(m_DefaultState);
 
-    private void Update()
-    {
-        if (m_States.Count == 0)
-            return;
-
-        if (m_CurrentState == null)
-            m_CurrentState = m_DefaultState;
-
-        if (m_CurrentState == null)
-            return;
-
-        int oldStateID = m_CurrentState.StateID;
-        int stateID = m_CurrentState.CheckTransitions();
-
-        if (stateID != oldStateID)
-        {
-            foreach (State state in m_States)
+            for (int i = 0; i < m_States.Count; i++)
             {
-                if (state.StateID == stateID)
-                {
-                    m_CurrentState.Exit();
-                    m_CurrentState = state;
-                    m_CurrentState.Enter();
-                }
+                m_States[i].GameObject = gameObject;
+                m_States[i].Initialize();
             }
         }
 
-        m_CurrentState.Update();
+        private void Update()
+        {
+            if (m_States.Count == 0)
+                return;
+
+            if (m_CurrentState == null)
+                m_CurrentState = m_DefaultState;
+
+            if (m_CurrentState == null)
+                return;
+
+            int oldStateID = m_CurrentState.StateID;
+            int stateID = m_CurrentState.CheckTransitions();
+
+            if (stateID != oldStateID)
+            {
+                for (int i = 0; i < m_States.Count; i++)
+                {
+                    if (m_States[i].StateID == stateID)
+                    {
+                        m_CurrentState.Exit();
+                        m_CurrentState = m_States[i];
+                        m_CurrentState.Enter();
+                        break;
+                    }
+                }
+            }
+
+            m_CurrentState.Update();
+        }
     }
 }
