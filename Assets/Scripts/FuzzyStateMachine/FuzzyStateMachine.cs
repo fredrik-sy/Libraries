@@ -13,16 +13,13 @@ namespace FuzzyStateMachine
 
             for (int i = 0; i < m_States.Length; i++)
             {
-                m_States[i].GameObject = gameObject;
+                m_States[i].gameObject = gameObject;
                 m_States[i].Initialize();
             }
         }
 
         private void Update()
         {
-            if (m_States.Length == 0)
-                return;
-
             for (int i = 0; i < m_States.Length; i++)
             {
                 if (m_States[i].CalculateActivation() > 0)
@@ -50,7 +47,12 @@ namespace FuzzyStateMachine
         {
             for (int i = 0; i < m_States.Length; i++)
             {
-                m_States[i].Exit();
+                if (m_ActivatedStates[i])
+                {
+                    m_ActivatedStates[i] = false;
+                    m_States[i].Exit();
+                }
+
                 m_States[i].Initialize();
             }
         }

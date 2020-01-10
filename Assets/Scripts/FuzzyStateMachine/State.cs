@@ -4,7 +4,7 @@ namespace FuzzyStateMachine
 {
     public abstract class State : ScriptableObject
     {
-        public GameObject GameObject { get; set; }
+        public GameObject gameObject { get; set; }
         public abstract float CalculateActivation();
         public abstract void Enter();
         public abstract void Exit();
