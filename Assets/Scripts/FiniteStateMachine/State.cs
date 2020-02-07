@@ -7,9 +7,11 @@ namespace FiniteStateMachine
         public GameObject gameObject { get; set; }
         public abstract int GetStateID();
         public abstract int CheckTransitions();
-        public abstract void Enter();
-        public abstract void Exit();
-        public abstract void Initialize();
-        public abstract void Update();
+        public virtual void Enter() { }
+        public virtual void Exit() { }
+        public virtual void FixedUpdate() { }
+        public virtual void Initialize() { }
+        public virtual void LateUpdate() { }
+        public virtual void Update() { }
     }
 }

@@ -23,7 +23,23 @@ namespace FiniteStateMachine
             m_CurrentState.Enter();
         }
 
+        private void FixedUpdate()
+        {
+            m_CurrentState.FixedUpdate();
+        }
+
         private void Update()
+        {
+            UpdateStateMachine();
+            m_CurrentState.Update();
+        }
+
+        private void LateUpdate()
+        {
+            m_CurrentState.LateUpdate();
+        }
+
+        private void UpdateStateMachine()
         {
             int currentStateID = m_CurrentState.GetStateID();
             int nextStateID = m_CurrentState.CheckTransitions();
@@ -41,8 +57,6 @@ namespace FiniteStateMachine
                     }
                 }
             }
-
-            m_CurrentState.Update();
         }
 
         public void Restart()
